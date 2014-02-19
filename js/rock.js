@@ -40,14 +40,33 @@ function Rock(size, x, y) {
 
     var angle = 0;
     while (angle < 360) {
-        angle += CONST.rand(Rock.data[this.size].minAngle, Rock.data[this.size].maxAgnle );
+        angle += CONST.rand(Rock.data[this.size].minAngle, Rock.data[this.size].maxAgnle);
         this.points.push({
             x: Math.sin(Math.PI / 180 * angle) * this.r,
             y: Math.cos(Math.PI / 180 * angle) * this.r
         });
     }
 }
+Rock.prototype.hitTest = function (x, y) {
+    if (x > this.x - this.r * CONST.d && x < this.x + this.r * CONST.d && y > this.y - this.r * CONST.d && y < this.y + this.r * CONST.d) {
 
+        Game.hit_ctx.clearRect(this.x - this.r * CONST.d, this.y - this.r * CONST.d, this.r * 2 * CONST.d, this.r * 2 * CONST.d);
+
+        Game.hit_ctx.beginPath();
+
+        for (var i = 0; i < this.points.length; i++) {
+            Game.hit_ctx[i === 0 ? 'moveTo' : 'lineTo'](this.points[i].x * CONST.d + this.x, this.points[i].y * CONST.d + this.y);
+        }
+
+        Game.hit_ctx.closePath();
+        Game.hit_ctx.fill();
+
+        if (Game.hit_ctx.getImageData(x, y, 1, 1).data[0] === 255) {
+            return true;
+        }
+    }
+    return false;
+};
 
 Rock.prototype.draw = function () {
 
@@ -55,23 +74,34 @@ Rock.prototype.draw = function () {
     this.y += this.modY * CONST.d;
 
     if (this.x + this.r * CONST.d < 0) {
-        this.x += CONST.width + (this.r*2*CONST.d);
+        this.x += CONST.width + (this.r * 2 * CONST.d);
     } else if (this.x - this.r * CONST.d > CONST.width) {
-        this.x -= CONST.width + (this.r*2*CONST.d);
+        this.x -= CONST.width + (this.r * 2 * CONST.d);
     }
 
     if (this.y + this.r * CONST.d < 0) {
-        this.y += CONST.height + (this.r*2*CONST.d);
+        this.y += CONST.height + (this.r * 2 * CONST.d);
     } else if (this.y - this.r * CONST.d > CONST.height) {
-        this.y -= CONST.height + (this.r*2*CONST.d);
+        this.y -= CONST.height + (this.r * 2 * CONST.d);
     }
 
     Game.ctx.beginPath();
     for (var i = 0; i < this.points.length; i++) {
         Game.ctx[i === 0 ? 'moveTo' : 'lineTo'](this.points[i].x * CONST.d + this.x, this.points[i].y * CONST.d + this.y);
+        Game.hit_ctx[i === 0 ? 'moveTo' : 'lineTo'](this.points[i].x * CONST.d + this.x, this.points[i].y * CONST.d + this.y);
     }
     Game.ctx.closePath();
     Game.ctx.stroke();
+
+};
+
+Rock.prototype.remove = function () {
+    if(this.size > 0) {
+        for( var i = 0, j = CONST.rand(2,6); i < j; i ++) {
+            new Rock(this.size-1, this.x, this.y);
+        }
+    }
+    delete Rock.all[this.id];
 };
 
 Rock.draw = function () {

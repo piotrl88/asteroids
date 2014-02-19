@@ -25,18 +25,27 @@ function Bullet() {
 
 Bullet.draw = function () {
     for (var i in Bullet.all) {
+        for (var r in Rock.all) {
+            if (Rock.all[r].hitTest(Bullet.all[i].x, Bullet.all[i].y)) {
+                Bullet.all[i].life += Bullet.life;
+                Rock.all[r].remove();
+                break;
+            }
+        }
+
         if (Bullet.all[i].life < Bullet.life) {
+
             Bullet.all[i].life++;
             Bullet.all[i].x += Bullet.all[i].modX;
             Bullet.all[i].y += Bullet.all[i].modY;
 
-            if (Bullet.all[i].x<0) {
+            if (Bullet.all[i].x < 0) {
                 Bullet.all[i].x += CONST.width;
             } else if (Bullet.all[i].x > CONST.width) {
                 Bullet.all[i].x -= CONST.width;
             }
 
-            if (Bullet.all[i].y<0) {
+            if (Bullet.all[i].y < 0) {
                 Bullet.all[i].y += CONST.height;
             } else if (Bullet.all[i].y > CONST.height) {
                 Bullet.all[i].y -= CONST.height;

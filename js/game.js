@@ -17,7 +17,9 @@ var CONST = {
 var Game = {
     init: function () {
         Game.canvas = document.createElement('canvas');
+        Game.hit_canvas = document.createElement('canvas');
         Game.ctx = Game.canvas.getContext('2d');
+        Game.hit_ctx = Game.hit_canvas.getContext('2d');
         Game.layout();
 
         window.addEventListener('resize', Game.layout, false);
@@ -26,12 +28,18 @@ var Game = {
         window.addEventListener('keyup', Game.onKey, false);
 
         document.body.appendChild(Game.canvas);
+
         for (var i = 0; i < 5; i++) {
-            new Rock(2);
+            new Rock();
         }
 
         Game.ship = new Ship();
         Game.animationLoop();
+    },
+    stop : function () {
+        window.removeEventListener('keydown', Game.onKey, false);
+        window.removeEventListener('keyup', Game.onKey, false);
+
     },
     layout: function (e) {
         CONST.width = window.innerWidth;
@@ -41,6 +49,10 @@ var Game = {
 
         Game.canvas.width = CONST.width;
         Game.canvas.height = CONST.height;
+
+        Game.hit_canvas.width = CONST.width;
+        Game.hit_canvas.height = CONST.height;
+        Game.hit_ctx.fillStyle = '#ff0000';
 
         Game.ctx.fillStyle = '#ffffff';
         Game.ctx.strokeStyle = '#ffffff';
@@ -52,9 +64,11 @@ var Game = {
         if (time - CONST.lastTime >= 1000 / CONST.fps) {
             CONST.lastTime = time;
             Game.ctx.clearRect(0, 0, CONST.width, CONST.height);
+
             Game.ship.draw();
-            Bullet.draw();
             Rock.draw();
+            Bullet.draw();
+
         }
     },
     onKey: function (e) {
