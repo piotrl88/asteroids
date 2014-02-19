@@ -79,3 +79,4 @@ Ship.prototype.draw = function () {
         this.y -= CONST.height - (CONST.height - Math.max(this.points[0].y, this.points[1].y, this.points[2].y)) * 0.9;
     }
 };
+
