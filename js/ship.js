@@ -35,14 +35,17 @@ Ship.prototype.draw = function () {
         if (this.hitTest()) {
             this.destroyed = true;
             Game.stop();
+            Rock.reset();
+            Points.reset();
+            setTimeout(Game.init, 2000);
         } else {
 
             if (Game.key_37 || Game.key_39) {
-                this.angle = this.angle + 7 * ( Game.key_37 ? -1 : 1);
+                this.angle = this.angle + 5 * ( Game.key_37 ? -1 : 1);
             }
             if (Game.key_38) {
                 this.modX = Math.max(-this.maxMod * CONST.d, Math.min(this.maxMod * CONST.d, this.modX + Math.sin(Math.PI / 180 * this.angle) * this.acc * CONST.d));
-                this.modY = this.modY - Math.cos(Math.PI / 180 * this.angle) * this.acc * CONST.d;
+                this.modY = Math.max(-this.maxMod * CONST.d, Math.min(this.maxMod * CONST.d, this.modY - Math.cos(Math.PI / 180 * this.angle) * this.acc * CONST.d));
             } else {
                 this.modX = this.modX * 0.98;
                 this.modX = Math.abs(this.modX) < 0.0001 ? 0 : this.modX;

@@ -3,6 +3,7 @@ body {
     padding: 0;
     overflow: hidden;
     background-color: black;
+    font-family: 'Titillium Web', sans-serif;
 }
 
 canvas {

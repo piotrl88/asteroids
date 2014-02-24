@@ -23,7 +23,6 @@ var Game = {
         Game.layout();
 
         window.addEventListener('resize', Game.layout, false);
-
         window.addEventListener('keydown', Game.onKey, false);
         window.addEventListener('keyup', Game.onKey, false);
 
@@ -34,12 +33,22 @@ var Game = {
         }
 
         Game.ship = new Ship();
+        Game.score = new Points();
         Game.animationLoop();
+
     },
     stop : function () {
+
+        Game.key_37 = false;
+        Game.key_38 = false;
+        Game.key_39 = false;
+        Game.key_32 = false;
+
+        Game.ctx.clearRect(0, 0, CONST.width, CONST.height);
+        Game.hit_ctx.clearRect(0, 0, CONST.width, CONST.height);
+
         window.removeEventListener('keydown', Game.onKey, false);
         window.removeEventListener('keyup', Game.onKey, false);
-
     },
     layout: function (e) {
         CONST.width = window.innerWidth;
@@ -68,8 +77,10 @@ var Game = {
             Game.ship.draw();
             Rock.draw();
             Bullet.draw();
-
+            Dot.draw();
+            Points.draw();
         }
+
     },
     onKey: function (e) {
         if (e.keyCode === 32 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39) {

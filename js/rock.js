@@ -5,19 +5,22 @@ Rock.data = [
         r: 0.025,
         speed: 0.0005,
         minAngle: 60,
-        maxAgnle: 90
+        maxAgnle: 90,
+        points : 10
     },
     {
         r: 0.08,
         speed: 0.00025,
         minAngle: 50,
-        maxAgnle: 70
+        maxAgnle: 70,
+        points : 5
     },
     {
         r: 0.2,
         speed: 0.00006,
         minAngle: 30,
-        maxAgnle: 45
+        maxAgnle: 45,
+        points : 2
     }
 ];
 
@@ -27,8 +30,12 @@ function Rock(size, x, y) {
     Rock.all[this.id] = this;
 
     this.size = size !== undefined ? size : 2;
+
+    /*this.x = x !== undefined ? x : ((CONST.rand(0, 1) ? CONST.rand(0, 3) : CONST.rand(7, 10)) / 10) * CONST.width;
+    this.y = y !== undefined ? y : ((CONST.rand(0, 1) ? CONST.rand(0, 3) : CONST.rand(7, 10)) / 10) * CONST.height;*/
+
     this.x = x !== undefined ? x : (CONST.rand(0, 1) ? CONST.rand(0, 30) : CONST.rand(70, 100) / 100) * CONST.width;
-    this.y = y !== undefined ? y : (CONST.rand(0, 1) ? CONST.rand(0, 30) / 100 : CONST.rand(70, 100) / 100) * CONST.width;
+    this.y = y !== undefined ? y : (CONST.rand(0, 1) ? CONST.rand(0, 30) : CONST.rand(70, 100) / 100) * CONST.width;
 
     this.modX = Rock.data[this.size].speed * CONST.rand(1, 10) * (CONST.rand(0, 1) ? 1 : -1);
     this.modY = Rock.data[this.size].speed * CONST.rand(1, 10) * (CONST.rand(0, 1) ? 1 : -1);
@@ -62,6 +69,8 @@ Rock.prototype.hitTest = function (x, y) {
         Game.hit_ctx.fill();
 
         if (Game.hit_ctx.getImageData(x, y, 1, 1).data[0] === 255) {
+            Points.add(Rock.data[this.size].points);
+            Points.draw();
             return true;
         }
     }
@@ -96,11 +105,12 @@ Rock.prototype.draw = function () {
 };
 
 Rock.prototype.remove = function () {
-    if(this.size > 0) {
-        for( var i = 0, j = CONST.rand(2,6); i < j; i ++) {
-            new Rock(this.size-1, this.x, this.y);
+    if (this.size > 0) {
+        for (var i = 0, j = CONST.rand(2, 6); i < j; i++) {
+            new Rock(this.size - 1, this.x, this.y);
         }
     }
+    Dot.add(this.x, this.y);
     delete Rock.all[this.id];
 };
 
@@ -109,5 +119,11 @@ Rock.draw = function () {
     for (var i in Rock.all) {
         Rock.num++;
         Rock.all[i].draw();
+    }
+};
+
+Rock.reset = function () {
+    for (var i in Rock.all) {
+        delete Rock.all[i];
     }
 };
