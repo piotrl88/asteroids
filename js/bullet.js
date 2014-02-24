@@ -25,10 +25,20 @@ function Bullet() {
 
 Bullet.draw = function () {
     for (var i in Bullet.all) {
+
         for (var r in Rock.all) {
             if (Rock.all[r].hitTest(Bullet.all[i].x, Bullet.all[i].y)) {
                 Bullet.all[i].life += Bullet.life;
                 Rock.all[r].remove();
+                break;
+            }
+        }
+
+        for (var p in Pickup.all) {
+            if (Pickup.all[p].hitTest(Bullet.all[i].x, Bullet.all[i].y)) {
+                console.log("hitttt");
+                Bullet.all[i].life += Bullet.life;
+                //Pickup.all[p].remove();
                 break;
             }
         }

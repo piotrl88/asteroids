@@ -36,6 +36,7 @@ Dot.prototype.draw = function () {
         delete Dot.all[this.id];
     }
 };
+
 Dot.add = function (x ,y ) {
     var n = CONST.rand(10, 20);
     for (var i = 0; i < n; i++) {

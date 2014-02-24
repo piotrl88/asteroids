@@ -79,6 +79,7 @@ var Game = {
             Bullet.draw();
             Dot.draw();
             Points.draw();
+            Pickup.draw();
         }
 
     },

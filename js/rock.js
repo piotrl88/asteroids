@@ -71,6 +71,7 @@ Rock.prototype.hitTest = function (x, y) {
         if (Game.hit_ctx.getImageData(x, y, 1, 1).data[0] === 255) {
             Points.add(Rock.data[this.size].points);
             Points.draw();
+            (CONST.rand(0,10)===Math.max(0,10)) ? new Pickup(this.x, this.y) : '';
             return true;
         }
     }
