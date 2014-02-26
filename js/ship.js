@@ -34,9 +34,10 @@ Ship.prototype.draw = function () {
     if (!this.destroyed) {
         if (this.hitTest()) {
             this.destroyed = true;
-            Game.stop();
+            setTimeout(Game.stop, 1000);
             Rock.reset();
             Points.reset();
+            Pickup.reset();
             setTimeout(Game.init, 2000);
         } else {
 

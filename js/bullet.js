@@ -34,16 +34,15 @@ Bullet.draw = function () {
             }
         }
 
-        for (var p in Pickup.all) {
-            if (Pickup.all[p].hitTest(Bullet.all[i].x, Bullet.all[i].y)) {
-                console.log("hitttt");
-                Bullet.all[i].life += Bullet.life;
-                //Pickup.all[p].remove();
-                break;
-            }
-        }
-
         if (Bullet.all[i].life < Bullet.life) {
+
+            for (var p in Pickup.all) {
+                if (Pickup.all[p].hitTest(Bullet.all[i].x, Bullet.all[i].y)) {
+                    Bullet.all[i].life += Bullet.life;
+                    Pickup.all[p].remove();
+                    break;
+                }
+            }
 
             Bullet.all[i].life++;
             Bullet.all[i].x += Bullet.all[i].modX;

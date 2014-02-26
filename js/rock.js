@@ -6,21 +6,21 @@ Rock.data = [
         speed: 0.0005,
         minAngle: 60,
         maxAgnle: 90,
-        points : 10
+        points: 10
     },
     {
         r: 0.08,
         speed: 0.00025,
         minAngle: 50,
         maxAgnle: 70,
-        points : 5
+        points: 5
     },
     {
         r: 0.2,
         speed: 0.00006,
         minAngle: 30,
         maxAgnle: 45,
-        points : 2
+        points: 2
     }
 ];
 
@@ -32,7 +32,7 @@ function Rock(size, x, y) {
     this.size = size !== undefined ? size : 2;
 
     /*this.x = x !== undefined ? x : ((CONST.rand(0, 1) ? CONST.rand(0, 3) : CONST.rand(7, 10)) / 10) * CONST.width;
-    this.y = y !== undefined ? y : ((CONST.rand(0, 1) ? CONST.rand(0, 3) : CONST.rand(7, 10)) / 10) * CONST.height;*/
+     this.y = y !== undefined ? y : ((CONST.rand(0, 1) ? CONST.rand(0, 3) : CONST.rand(7, 10)) / 10) * CONST.height;*/
 
     this.x = x !== undefined ? x : (CONST.rand(0, 1) ? CONST.rand(0, 30) : CONST.rand(70, 100) / 100) * CONST.width;
     this.y = y !== undefined ? y : (CONST.rand(0, 1) ? CONST.rand(0, 30) : CONST.rand(70, 100) / 100) * CONST.width;
@@ -71,7 +71,6 @@ Rock.prototype.hitTest = function (x, y) {
         if (Game.hit_ctx.getImageData(x, y, 1, 1).data[0] === 255) {
             Points.add(Rock.data[this.size].points);
             Points.draw();
-            (CONST.rand(0,10)===Math.max(0,10)) ? new Pickup(this.x, this.y) : '';
             return true;
         }
     }
@@ -112,6 +111,7 @@ Rock.prototype.remove = function () {
         }
     }
     Dot.add(this.x, this.y);
+    ((CONST.rand(0,10)===10) ? Pickup.add(this.x, this.y) : '');
     delete Rock.all[this.id];
 };
 

@@ -18,16 +18,27 @@ var Game = {
     init: function () {
         Game.canvas = document.createElement('canvas');
         Game.hit_canvas = document.createElement('canvas');
+
         Game.ctx = Game.canvas.getContext('2d');
         Game.hit_ctx = Game.hit_canvas.getContext('2d');
+
         Game.layout();
 
         window.addEventListener('resize', Game.layout, false);
         window.addEventListener('keydown', Game.onKey, false);
         window.addEventListener('keyup', Game.onKey, false);
+        //window.addEventListener('keydown', Game.onEnterKey, false);
 
         document.body.appendChild(Game.canvas);
-
+        Game.start();
+        //Game.showIntro();
+    },
+    showIntro : function () {
+        Game.ctx.fillStyle = '#ffffff';
+        Game.ctx.font = 'bold 24px Titillium Web';
+        Game.ctx.fillText("Press ENTER to start ", CONST.width/2 - 100, CONST.height/2);
+    },
+    start : function () {
         for (var i = 0; i < 5; i++) {
             new Rock();
         }
@@ -35,10 +46,8 @@ var Game = {
         Game.ship = new Ship();
         Game.score = new Points();
         Game.animationLoop();
-
     },
     stop : function () {
-
         Game.key_37 = false;
         Game.key_38 = false;
         Game.key_39 = false;
@@ -49,6 +58,8 @@ var Game = {
 
         window.removeEventListener('keydown', Game.onKey, false);
         window.removeEventListener('keyup', Game.onKey, false);
+
+        document.body.removeChild(Game.canvas);
     },
     layout: function (e) {
         CONST.width = window.innerWidth;
@@ -77,11 +88,18 @@ var Game = {
             Game.ship.draw();
             Rock.draw();
             Bullet.draw();
+            Pickup.draw();
             Dot.draw();
             Points.draw();
-            Pickup.draw();
         }
 
+    },
+    onEnterKey : function(e) {
+        if (e.keyCode === 13 ) {
+            e.preventDefault();
+            Game.start();
+            window.removeEventListener('keydown', Game.onEnterKey, false);
+        }
     },
     onKey: function (e) {
         if (e.keyCode === 32 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39) {

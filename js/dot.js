@@ -38,7 +38,7 @@ Dot.prototype.draw = function () {
 };
 
 Dot.add = function (x ,y ) {
-    var n = CONST.rand(10, 20);
+    var n = CONST.rand(15, 40);
     for (var i = 0; i < n; i++) {
         new Dot(x, y);
     }
